@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Lexend+Giga&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.active hr {
+  display: block;
+}
+
+.logo {
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+/* Az eddigi kód változatlan */
+.image-container img {
+  width: 200px;           /* Fix szélesség */
+  height: 200px;          /* Fix magasság */
+  object-fit: cover;      /* A képek kitöltik a rendelkezésre álló helyet anélkül, hogy torzulnának */
+  object-position: center; /* A kép középre igazítása */
+}
+
+/* Az eddigi kód változatlan */
+.footer-logo {
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+* {
+  font-family: "Lexend Deca", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lexend-deca {
+  font-family: "Lexend Deca", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Kis képernyők (mobil) esetén az aktív linkek stílusa */
+@media (max-width: 640px) {
+  a.active {
+    background-color: rgb(39, 38, 38);
+    color: white;
+  }
+}
+
+.order-item-img {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Megakadályozza, hogy a nagyobb képek kilógjanak */
+}
+
+
+/* Megakadályozza a szám mező spinner megjelenését */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+/* A scrollbar elrejtése a Tailwind CSS plugin segítségével, ha kell */
+/* @media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+} */
+
+/* Új kiegészítés: Képek fix mérete és elrendezése */
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Új kiegészítés: Képek fix mérete */
+.image-container img {
+  width: 200px;           /* Fix szélesség */
+  height: 200px;          /* Fix magasság */
+  object-fit: cover;      /* A képek kitöltik a rendelkezésre álló helyet anélkül, hogy torzulnának */
+  object-position: center; /* A kép középre igazítása */
+  margin: 10px;           /* Kis távolság a képek között */
+  border-radius: 8px;     /* Lekerekített sarkok a képeknek */
+}

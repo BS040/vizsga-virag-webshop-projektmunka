@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: Lexend Deca;
+}
+
+select,input,textarea{
+    border: 1px solid #575656;
+    outline-color: #575656;
+    border-radius: 4px;
+}
+
+.active{
+  background-color: #b5e7fd;
+  border-color: #69d2ff;
+}
