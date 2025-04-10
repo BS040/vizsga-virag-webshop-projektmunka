@@ -31,7 +31,7 @@ const Login = () => {
 
   useEffect(() => {
     if (currentState === 'Bejelentkezés') {
-      // Ha bejelentkezésre vált, ürítsük ki a jelszót és megerősítést
+      // Ha bejelentkezésre vált, akkor kiürül a jelszó és a jelszó megerősítés
       setPassword('');
       setConfirmPassword('');
       setEmail('');
@@ -196,7 +196,7 @@ const Login = () => {
         <input
           onChange={(e) => {
             setPassword(e.target.value);
-            checkPasswordStrength(e.target.value);  // Erősség ellenőrzése minden beírásnál
+            checkPasswordStrength(e.target.value);  // Erősség ellenőrzése
           }}
           value={password}
           type={showPassword ? 'text' : 'password'}

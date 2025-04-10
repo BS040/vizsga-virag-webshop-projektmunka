@@ -7,10 +7,10 @@ const productRoute = express.Router();
 
 productRoute.post('/add', adminAuth, upload.fields([{ name: 'image1', maxCount: 1 }, { name: 'image2', maxCount: 1 }, { name: 'image3', maxCount: 1 }, { name: 'image4', maxCount: 1 }]), addProduct);
 productRoute.post('/remove', adminAuth, removeProduct);
-productRoute.get('/list', listProducts);  // Lehet hogy ezt is GET-re kell módosítani, ha nem POST-tel használod
-productRoute.get('/single/:productId', singleProduct);  // productId az URL paraméter
+productRoute.get('/list', listProducts);  
+productRoute.get('/single/:productId', singleProduct);  
 productRoute.put('/update', adminAuth, upload.fields([{ name: 'image1', maxCount: 1 }, { name: 'image2', maxCount: 1 }, { name: 'image3', maxCount: 1 }, { name: 'image4', maxCount: 1 }]), (req, res, next) => {
-    console.log('Update request received:', req.body);  // Logolás
+    console.log('Update request received:', req.body);  
     next();
 }, updateProduct);
 

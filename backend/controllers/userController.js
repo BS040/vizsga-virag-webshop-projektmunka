@@ -57,7 +57,34 @@ const sendRegistrationEmail = (email, name) => {
     });
   };
 
-// Visszaadja az adott user adatait
+
+  // Email küldése inaktiváláskor
+const sendDeactivationEmail = (email, name) => {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Fiók inaktiválva',
+        html: `
+            <p>Kedves ${name},</p>
+            <p>Az Ön fiókja inaktiválva lett az adminisztrátor által.</p>
+            <p>A legvalószínűbb oka amiért inaktiválva lett az hogy rendelését nem vette át három napon belül.</p>
+            <p>Ha viszont ez tévedés volt, kérjük, vegye fel velünk a kapcsolatot ezen az e-mail címen ugyfelszolgalat@virag.com!</p>
+            <p>Köszönjük,</p>
+            <p>A Virágwebshop csapata</p>
+        `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Inaktiválási email hiba:', error);
+        } else {
+            console.log('Inaktiválási email elküldve:', info.response);
+        }
+    });
+};
+
+
+// Az adott user adatait
 const getUserDetails = async (req, res) => {
     try {
       const user = await userModel.findById(req.body.userId);
@@ -111,7 +138,7 @@ const loginUser = async (req, res) => {
 
 
 
-//Email küldése regisztrációkor
+
 // User Regisztráció útvonala
 const registerUser = async (req, res) => {
 
@@ -119,7 +146,7 @@ const registerUser = async (req, res) => {
 
         const { name, email, password } = req.body;
 
-        // ellenőrzés hogy a felhasználó már rendelkezik e fiokkal vagy nem
+        // ellenőrzés hogy létezik e a fiók
 
         const exists = await userModel.findOne({ email });
         if (exists) {
@@ -174,24 +201,32 @@ const deactivateUser = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Ellenőrizzük, hogy a felhasználó létezik-e
         const user = await userModel.findById(id);
         if (!user) {
             return res.status(404).json({ success: false, message: 'Felhasználó nem található' });
         }
 
-        // A státuszt állítjuk, ha aktív, akkor inaktívra állítjuk, ha inaktív, akkor visszaállítjuk aktívra
         const newStatus = user.status === 'active' ? 'inactive' : 'active';
         user.status = newStatus;
 
         await user.save();
 
-        res.json({ success: true, message: `Felhasználó státusza sikeresen ${newStatus === 'inactive' ? 'inaktiválva' : 'visszaállítva'}` });
+        // Email csak akkor, ha inaktiválva lett
+        if (newStatus === 'inactive') {
+            sendDeactivationEmail(user.email, user.name);
+        }
+
+        res.json({
+            success: true,
+            message: `Felhasználó státusza sikeresen ${newStatus === 'inactive' ? 'inaktiválva' : 'visszaállítva'}`,
+        });
+
     } catch (error) {
         console.error('Hiba a felhasználó státuszának módosításakor:', error);
         res.status(500).json({ success: false, message: 'Szerver hiba a státusz módosítása során' });
     }
 };
+
 
 
 

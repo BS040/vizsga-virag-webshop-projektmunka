@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-// Backend URL beállítása Vite környezeti változó alapján
+// Backend URL beállítása
 const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 const ShopContext = createContext();
@@ -31,14 +31,14 @@ const ShopContextProvider = ({ children }) => {
   //Kosár kiürítése a rendelés után 
   const clearCart = () => {
     console.log('Törlöm a kosarat...');
-    localStorage.removeItem('cartItems'); // Ez működik
-    setCartItems({}); // Kosár állapot kiürítése
+    localStorage.removeItem('cartItems'); 
+    setCartItems({}); 
     console.log('Kosár törölve.');
   };
   
   
 
- // Kosárhoz adás (async)
+ // Kosárhoz adás
 const addToCart = async (itemId, size, quantity) => {
   if (!size || quantity <= 0) {
     toast.error("Válassz egy érvényes opciót és mennyiséget!");
@@ -49,7 +49,7 @@ const addToCart = async (itemId, size, quantity) => {
   const product = products.find(product => product._id === itemId);
   const selectedSize = product.sizes.find(item => item.size === size);
 
-  // Ellenőrizzük, hogy a kosárban már van-e a termékből, és ha igen, akkor nem haladhatja meg a készletet
+  // Ha a kosárban már van-e a termékből, akkor nem haladhatja meg a készletet
   const currentQuantityInCart = cartData[itemId] ? cartData[itemId][size] || 0 : 0;
   const newQuantity = currentQuantityInCart + quantity;
 
@@ -74,7 +74,7 @@ const addToCart = async (itemId, size, quantity) => {
 
   if (token) {
     try {
-      // Backend kérés, hogy frissítse a kosarat az adatbázisban
+      
       const response = await axios.post(
         `${backendUrl}/api/cart/add`,
         { itemId, size, quantity },
@@ -103,7 +103,7 @@ const addToCart = async (itemId, size, quantity) => {
     );
   };
 
-  // Kosár mennyiség frissítése (async)
+  // Kosár mennyiség frissítése
   const updateQuantity = async (itemId, size, quantity) => {
     let cartData = structuredClone(cartItems);
     if (cartData[itemId] && cartData[itemId][size] !== undefined) {
@@ -134,14 +134,14 @@ const addToCart = async (itemId, size, quantity) => {
     }
   };
 
-  // Kosár teljes árának számítása
+  
 // Kosár teljes árának számítása
 const getCartAmount = () => {
   return Object.entries(cartItems).reduce((total, [itemId, sizes]) => {
     let item = products.find((product) => product._id === itemId);
     if (!item) return total;
 
-    // Iterálunk a kiválasztott méreteken és azok árát hozzáadjuk
+    // Az kiválasztott méretekhez az árát hozzáadjuk
     Object.entries(sizes).forEach(([size, quantity]) => {
       const sizeData = item.sizes.find(s => s.size === size);
       if (sizeData) {
@@ -216,7 +216,7 @@ const logout = () => {
     navigate,
     setToken,
     token,
-    backendUrl, // Mostantól a backendUrl elérhető bárhol a ShopContextben
+    backendUrl, // A backendUrl ShopContextben
     logout, // A logout funkció hozzáadása
     clearCart,
   };

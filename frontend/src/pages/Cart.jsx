@@ -8,14 +8,14 @@ const Cart = () => {
   const { products, symbol, cartItems, updateQuantity, navigate } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
-  // Ellenőrzés, hogy van-e tétel a kosárban
+  // Ellenőrzés, hogy van-e termék a kosárban
   const hasItemsInCart = Object.values(cartItems).some(item => Object.values(item).some(quantity => quantity > 0));
 
   useEffect(() => {
     if (products.length > 0) {
       const tempData = [];
 
-      // Iteráljunk végig a kosár elemein és adjuk hozzá az árakat
+      // Az kosár termékeihez adjuk hozzá az árakat
       for (const itemId in cartItems) {
         for (const size in cartItems[itemId]) {
           const quantity = cartItems[itemId][size];
@@ -47,10 +47,10 @@ const Cart = () => {
 
     // Ha az érték meghaladja a készletet, akkor a megfelelő tartományba korlátozzuk
     if (value < 1) {
-      value = 1;  // Legalább 1
+      value = 1;  // Minimum 1 kell legyen
     }
     if (value > item.stock) {
-      value = item.stock;  // Ne lehet nagyobb, mint a készlet
+      value = item.stock;  // Nem lehet nagyobb, mint a készlet
     }
 
     // Csak akkor frissítjük a mennyiséget, ha érvényes értéket adunk meg
@@ -58,7 +58,7 @@ const Cart = () => {
   };
 
   const handleInput = (item, e) => {
-    // Eltávolítjuk a nem kívánt karaktereket, hogy ne lehessen nagyobb számot beírni
+    // A nem kívánt karakterek eltávolítása, hogy ne lehessen nagyobb számot beírni
     const max = item.stock;
     const value = e.target.value;
 
@@ -69,16 +69,16 @@ const Cart = () => {
   };
 
   const handleAddToCart = (item) => {
-    // Ellenőrizzük, hogy a kosárban lévő mennyiség elérte-e a készletet
+    // Hogy a kosárban lévő mennyiség elérte-e a készletet
     const currentQuantity = cartItems[item._id] ? cartItems[item._id][item.size] || 0 : 0;
     
     if (currentQuantity >= item.stock) {
-      // Ha már a kosárban van a maximális mennyiség, ne engedjük hozzáadni
+      // Ha már a kosárban van a maximális mennyiség, nem lehet hozzáadni
       alert('Nem tudsz több terméket hozzáadni a kosárhoz, mint amennyi készleten van.');
       return;
     }
 
-    // Egyébként növeljük a mennyiséget
+    // Növeli a mennyiséget
     updateQuantity(item._id, item.size, currentQuantity + 1);
   };
 
@@ -103,12 +103,12 @@ const Cart = () => {
               </div>
 
               <input
-                onInput={(e) => handleInput(item, e)}  // Figyeljük az inputot, hogy letiltsuk a nagyobb számot
+                onInput={(e) => handleInput(item, e)}  // Figyeli az inputot, hogy letiltsa a nagyobb számot
                 onChange={(e) => handleInputChange(item, e)} // Valódi érték frissítése
                 className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
                 type="number"
                 min={1}  // Minimum érték 1
-                max={item.stock}  // Beállítjuk a maximális értéket a készlet alapján
+                max={item.stock}  // Beállítja a maximális értéket a készlet alapján
                 defaultValue={item.quantity}
               />
               <img

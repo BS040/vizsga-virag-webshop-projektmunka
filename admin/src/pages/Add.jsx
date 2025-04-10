@@ -22,13 +22,13 @@ const Add = ({ token }) => {
     { size: 'Nagy', price: '', stock: 0 },
   ]);
 
-  // Módszer, hogy leellenőrizzük, hogy minden kép feltöltésre került-e
+  // Képek ellenőrzése hogy mindegyik feltöltve lett-e
   const allImagesUploaded = image1 && image2 && image3 && image4;
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    // Ha nincs 4 kép feltöltve, ne engedjük a termék hozzáadását
+    // Ha nincs 4 kép feltöltve, nem engedjük a termék hozzáadását
     if (!allImagesUploaded) {
       toast.error("Minden kép feltöltése szükséges a termék hozzáadásához!");
       return;
@@ -115,20 +115,20 @@ const Add = ({ token }) => {
       {/* Termék neve */}
       <div className='w-full '>
         <p className='mb-2'>Termék neve</p>
-        <input onChange={(e) => setName(e.target.value)} value={name} className='w-full max-w-[500px] px-3 py-2 ' type="text" placeholder='Írd ide a termék nevét' required />
+        <input onChange={(e) => setName(e.target.value)} value={name} className='w-full max-w-[500px] px-3 py-2 rounded-none' type="text" placeholder='Írd ide a termék nevét' required />
       </div>
 
       {/* Termék leírása */}
       <div className='w-full '>
         <p className='mb-2'>Termék leírás</p>
-        <textarea onChange={(e) => setDescription(e.target.value)} value={description} className='w-full max-w-[500px] px-3 py-2 ' placeholder='Írd ide a termék leírását' required />
+        <textarea onChange={(e) => setDescription(e.target.value)} value={description} className='w-full max-w-[500px] px-3 py-2 rounded-none' placeholder='Írd ide a termék leírását' required />
       </div>
 
       {/* Kategória és típus */}
       <div className='flex flex-col sm:flex-row gap-2 w-full sm:gap-8 '>
         <div>
           <p className='mb-2'>Kategória</p>
-          <select onChange={(e) => setCategory(e.target.value)} className='w-full px-3 py-2'>
+          <select onChange={(e) => setCategory(e.target.value)} className='w-full px-3 py-2 rounded-none'>
             <option value="Csokor">Csokor</option>
             <option value="Szálas">Szálas</option>
             <option value="Cserepes">Cserepes</option>
@@ -136,7 +136,7 @@ const Add = ({ token }) => {
         </div>
         <div>
           <p className='mb-2'>Típus</p>
-          <select onChange={(e) => setSubCategory(e.target.value)} className='w-full px-3 py-2'>
+          <select onChange={(e) => setSubCategory(e.target.value)} className='w-full px-3 py-2 rounded-none'>
             <option value="Esküvői">Esküvői</option>
             <option value="Kerti">Kerti</option>
             <option value="Dekoráció">Dekoráció</option>
@@ -151,7 +151,7 @@ const Add = ({ token }) => {
           {sizes.map((size) => (
             <div key={size.size} className='flex flex-col'>
               <p>{size.size}</p>
-              <input type='number' placeholder={`Ár (${size.size})`} value={size.price} onChange={(e) => handleSizeChange(size.size, 'price', e.target.value)} className='w-[120px] px-3 py-2' />
+              <input type='number' placeholder={`Ár (${size.size})`} value={size.price} onChange={(e) => handleSizeChange(size.size, 'price', e.target.value)} className='w-[120px] px-3 py-2 rounded-none' />
             </div>
           ))}
         </div>
@@ -163,7 +163,7 @@ const Add = ({ token }) => {
           {sizes.map((size) => (
             <div key={size.size} className='flex flex-col'>
               <p>{size.size}</p>
-              <input type='number' placeholder={`Készlet (${size.size})`} value={size.stock} onChange={(e) => handleSizeChange(size.size, 'stock', e.target.value)} className='w-[120px] px-3 py-2' />
+              <input type='number' placeholder={`Készlet (${size.size})`} value={size.stock} onChange={(e) => handleSizeChange(size.size, 'stock', e.target.value)} className='w-[120px] px-3 py-2 rounded-none' />
             </div>
           ))}
         </div>

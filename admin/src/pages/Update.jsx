@@ -20,7 +20,7 @@ const Update = ({ token }) => {
             largeStock: 0,
         },
         bestseller: false,
-        images: [], // Az összes kép (új és meglévő)
+        images: [], // Az összes kép
     });
 
     const { id } = useParams();
@@ -63,24 +63,24 @@ const Update = ({ token }) => {
         fetchProduct();
     }, [id, token]);
 
-    // Handle image change
+    
     const handleImageChange = (e, index) => {
         if (e.target.files.length > 0) {
             const newImagesArray = [...formData.images];
 
-            // Cseréljük le az adott indexű képet az újra
+            // Cseréljük le az képet az újra
             newImagesArray[index] = e.target.files[0];
 
-            // Biztosítjuk, hogy pontosan 4 kép legyen
+            // Pontosan 4 kép legyen
             while (newImagesArray.length < 4) {
-                newImagesArray.push(null); // Üres helyeket kitöltünk null-al
+                newImagesArray.push(null); 
             }
 
             setFormData({ ...formData, images: newImagesArray });
         }
     };
 
-    // Handle form submission to update product
+    // Termék frissítés
     const handleUpdate = async (e) => {
         e.preventDefault();
 
@@ -284,14 +284,14 @@ const Update = ({ token }) => {
 
                             {/* Kép módosítása */}
                             <input
-                                id={`file-input-${index}`} // Egyedi azonosító minden inputhoz
+                                id={`file-input-${index}`}
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => handleImageChange(e, index)}
                                 className="hidden"
                             />
                             <label
-                                htmlFor={`file-input-${index}`} // Összekapcsoljuk a labelt az inputtal
+                                htmlFor={`file-input-${index}`}
                                 className="flex items-center justify-center w-full h-10 bg-black text-white cursor-pointer hover:bg-gray-800 transition duration-300 px-4"
                             >
                                 Kép választása

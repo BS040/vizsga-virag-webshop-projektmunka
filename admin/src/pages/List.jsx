@@ -96,7 +96,7 @@ const ProductRow = ({ item, removeProduct, navigate }) => {
       </div>
 
       {/* Méretválasztó */}
-      <select value={selectedSize} onChange={handleSizeChange} className='border px-2 py-1'>
+      <select value={selectedSize} onChange={handleSizeChange} className='border px-2 py-1 rounded-none'>
         {item.sizes.map((sizeObj) => (
           <option key={sizeObj._id} value={sizeObj.size}>{sizeObj.size}</option>
         ))}

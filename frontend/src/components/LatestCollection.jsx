@@ -8,9 +8,9 @@ const LatestCollection = () => {
   const [latestProducts, setLatestProducts] = useState([]);
 
   useEffect(() => {
-    // A termékeket időrendben rendezzük, a legújabbak kerüljenek előre
+    // A termékeket időrendbe rendezése, a legújabbak kerülnek előre
     const sortedProducts = [...products].sort((a, b) => b.date - a.date); // csökkenő sorrend
-    setLatestProducts(sortedProducts.slice(0, 10)); // Csak az első 10 legújabb terméket vesszük
+    setLatestProducts(sortedProducts.slice(0, 10)); // Csak az első 10 legújabb termék
   }, [products]);
 
   return (
@@ -21,7 +21,7 @@ const LatestCollection = () => {
          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Possimus explicabo numquam laborum suscipit praesentium similique quis, tempore quasi, nemo natus, nulla sunt voluptatem rem aperiam quia et doloribus placeat pariatur!
         </p>
       </div>
-      {/* Termékek rendering */}
+      {/* Termékek */}
       <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
         {
           latestProducts.map((item, index) => (

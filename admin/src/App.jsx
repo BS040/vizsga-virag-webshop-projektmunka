@@ -6,10 +6,10 @@ import Add from './pages/Add';
 import List from './pages/List';
 import Orders from './pages/Orders';
 import Login from './components/Login';
-import Update from './pages/Update'; // Importáljuk az Update komponenst
+import Update from './pages/Update'; 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ManageUsers from './pages/ManageUsers'; // Importáld az új oldalt
+import ManageUsers from './pages/ManageUsers'; 
 import ScrollToTop from './components/ScrollToTop'
 
 
@@ -44,8 +44,8 @@ const App = () => {
                 <Route path='/add' element={<Add token={token} />} />
                 <Route path='/list' element={<List token={token} />} />
                 <Route path='/orders' element={<Orders token={token} />} />
-                <Route path='/update/:id' element={<Update token={token} />} /> {/* Hozzáadtuk az Update route-ot */}
-                <Route path='/manageusers' element={<ManageUsers token={token} />} /> {/* Hozzáadtuk a ManageUsers route-ot */}
+                <Route path='/update/:id' element={<Update token={token} />} /> {/* Update útvonal */}
+                <Route path='/manageusers' element={<ManageUsers token={token} />} /> {/* ManageUsers útvonal */}
               </Routes>
             </div>
           </div>

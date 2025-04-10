@@ -11,35 +11,121 @@ const shipping = 0
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 
-const sendEmail = async (orderDetails) => {
+const sendEmail = async (orderDetails, status) => {
     const transporter = nodemailer.createTransport({
-        service: 'gmail', // Használhatsz más szolgáltatót is (pl. SendGrid, Mailgun, stb.)
+        service: 'gmail',
         auth: {
-            user: process.env.EMAIL_USER, // A küldő e-mail címe
-            pass: process.env.EMAIL_PASS,  // Az e-mail jelszava
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
         },
     });
 
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: orderDetails.userEmail, // A vásárló e-mail címe
-        subject: 'Rendelés visszaigazolás',
-        text: `Kedves ${orderDetails.userName},
-A rendelését sikeresen megkaptuk. Az alábbiakban találhatóak a rendelés részletei:
+    let subject, text;
 
-Termékek: ${orderDetails.items.map(item => `${item.name} x ${item.quantity}`).join(', ')}
+    // Az e-mail tartalma státusz alapján változik
+    if (status === "Átvehető") {
+        subject = 'A rendelése átvehető!';
+        text = `
+Kedves ${orderDetails.userName},
+
+Örömmel értesítjük, hogy rendelése készen áll az átvételre. Az alábbiakban találhatók a rendelés részletei:
+
+Termékek:
+${orderDetails.items.map(item => `${item.name} x ${item.quantity}`).join(', ')}
+
 Rendelés összege: ${orderDetails.amount} Ft
 
-            
 Teljes név: ${orderDetails.address.fullName}
+Rendelési cím: ${orderDetails.address.street}, ${orderDetails.address.city}, ${orderDetails.address.state}, ${orderDetails.address.zipcode}
 Ország: ${orderDetails.address.country}
-Szállítási cím: ${orderDetails.address.state}, ${orderDetails.address.zipcode}, ${orderDetails.address.city}, ${orderDetails.address.street}
 Telefonszám: ${orderDetails.address.phone}
 
-Köszönjük, hogy nálunk vásárolt!`,
-    };
+!!FONTOS!!
+Rendelését három napon belül veheti át. Amennyiben ez nem történik meg, előreutalás esetén nem utaljuk vissza a rendelés összegét, viszont amennyiben személyesen átvételre került volna sor
+(és ez végül nem teljesült), az oldalról letiltásra kerül, és többé nem rendelhet az oldalról.
+Amennyiben ezek után újra akarja oldalni fiókját írjon e-mailt az adminisztrátornak az ugyfelszolgalat@virag.com címre.
 
-    //Rendelés ID: ${orderDetails.orderId} Ha meg akarjuk jeleníteni akkor ezt lehetne beírni az emailben
+Megértését és vásárlását köszönjük!
+
+Üdvözlettel,
+A Virágwebshop csapata
+        `;
+    } else if (status === "Teljesített") {
+        subject = 'A rendelése teljesítve lett!';
+        text = `
+Kedves ${orderDetails.userName},
+
+Örömmel értesítjük, hogy rendelése sikeresen teljesítve lett. Az alábbiakban találhatók a rendelés részletei:
+
+Termékek:
+${orderDetails.items.map(item => `${item.name} x ${item.quantity}`).join(', ')}
+
+Rendelés összege: ${orderDetails.amount} Ft
+
+Teljes név: ${orderDetails.address.fullName}
+Rendelési cím: ${orderDetails.address.street}, ${orderDetails.address.city}, ${orderDetails.address.state}, ${orderDetails.address.zipcode}
+Ország: ${orderDetails.address.country}
+Telefonszám: ${orderDetails.address.phone}
+
+Köszönjük, hogy nálunk vásárolt!
+
+Üdvözlettel,
+A Virágwebshop csapata
+        `;
+    } else if (status === "Nem teljesített") {
+        subject = 'A rendelése lejárt!';
+        text = `
+Kedves ${orderDetails.userName},
+
+Sajnálattal értesítjük, hogy rendelése lejárt. Az alábbiakban találhatók a rendelés részletei:
+
+Termékek:
+${orderDetails.items.map(item => `${item.name} x ${item.quantity}`).join(', ')}
+
+Rendelés összege: ${orderDetails.amount} Ft
+
+Teljes név: ${orderDetails.address.fullName}
+Rendelési cím: ${orderDetails.address.street}, ${orderDetails.address.city}, ${orderDetails.address.state}, ${orderDetails.address.zipcode}
+Ország: ${orderDetails.address.country}
+Telefonszám: ${orderDetails.address.phone}
+
+Mivel három napon belül nem tudta a rendelését átvenni ezért már nem érhető el, és az oldalról már vagy hamarosan letiltasra kerül. 
+Amennyiben ezek után újra akarja oldalni fiókját írjon e-mailt az adminisztrátornak az ugyfelszolgalat@virag.com címre.
+
+Üdvözlettel,
+A Virágwebshop csapata
+        `;
+    } else {
+        // Alapértelmezett visszaigazoló e-mail
+        subject = 'Rendelés visszaigazolás';
+        text = `
+Kedves ${orderDetails.userName},
+
+A rendelését sikeresen megkaptuk. Az alábbiakban találhatóak a rendelés részletei:
+
+Termékek:
+${orderDetails.items.map(item => `${item.name} x ${item.quantity}`).join(', ')}
+
+Rendelés összege: ${orderDetails.amount} Ft
+
+Teljes név: ${orderDetails.address.fullName}
+Rendelési cím: ${orderDetails.address.street}, ${orderDetails.address.city}, ${orderDetails.address.state}, ${orderDetails.address.zipcode}
+Ország: ${orderDetails.address.country}
+Telefonszám: ${orderDetails.address.phone}
+
+Köszönjük, hogy nálunk vásárolt!
+
+Üdvözlettel,
+A Virágwebhop csapata
+        `;
+    }
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: orderDetails.userEmail,
+        subject: subject,
+        text: text,
+    };
 
     try {
         await transporter.sendMail(mailOptions);
@@ -49,31 +135,33 @@ Köszönjük, hogy nálunk vásárolt!`,
     }
 };
 
+
+
 // Rendelés utávételes módja
 
 const placeOrder = async (req, res) => {
     try {
         const { userId, items, amount, address } = req.body;
 
-        // Ellenőrizzük a készletet és frissítjük
+        // Ellenőrzi a készletet és frissíti
         for (let item of items) {
             const product = await productModel.findById(item._id);
             if (!product) {
                 return res.status(404).json({ success: false, message: "A termék nem található." });
             }
 
-            // Megkeressük a megfelelő méretet
+            // Megkeresi a megfelelő méretet
             const sizeIndex = product.sizes.findIndex(s => s.size === item.size);
             if (sizeIndex === -1) {
                 return res.status(400).json({ success: false, message: "Nem megfelelő méret." });
             }
 
-            // Ellenőrizzük a készletet
+            // Ellenőrizi a készletet
             if (product.sizes[sizeIndex].stock < item.quantity) {
                 return res.status(400).json({ success: false, message: `Nincs elég készleten: ${product.name} (${item.size})` });
             }
 
-            // Csökkentjük a készletet
+            // Csökkenti a készletet
             product.sizes[sizeIndex].stock -= item.quantity;
             await product.save();
         }
@@ -120,7 +208,7 @@ const placeOrderStripe = async (req, res) => {
         const { userId, items, amount, address } = req.body;
         const { origin } = req.headers;
 
-        // Ellenőrizzük a készletet és frissítjük
+        // Ellenőrzi a készletet és frissítjük
         for (let item of items) {
             const product = await productModel.findById(item._id);
             if (!product) {
@@ -265,17 +353,75 @@ const userOrders = async (req, res) => {
 //Rendelési státusz frissitése
 const updateStatus = async (req, res) => {
     try {
+        const { orderId, status } = req.body;
 
-        const { orderId, status } = req.body
+        // Rendelés keresése
+        const order = await orderModel.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ success: false, message: "Rendelés nem található" });
+        }
 
-        await orderModel.findByIdAndUpdate(orderId, { status })
-        res.json({ success: true, message: "Státusz frissítve" })
+        // A státusz frissítése
+        order.status = status;
+
+        // Ha a státusz "Átvehető", akkor küld e-mailt a felhasználónak
+        if (status === "Átvehető") {
+            const user = await userModel.findById(order.userId);
+            const orderDetails = {
+                userEmail: user.email,
+                userName: user.name,
+                orderId: order._id,
+                items: order.items,
+                amount: order.amount,
+                address: order.address,
+            };
+            
+            await sendEmail(orderDetails, status);
+        }
+
+        // Ha a státusz "Teljesített", akkor küld e-mailt a felhasználónak
+        else if (status === "Teljesített") {
+            const user = await userModel.findById(order.userId);
+            const orderDetails = {
+                userEmail: user.email,
+                userName: user.name,
+                orderId: order._id,
+                items: order.items,
+                amount: order.amount,
+                address: order.address,
+            };
+            
+            await sendEmail(orderDetails, status);
+        }
+
+        // Ha a státusz "Lejárt", akkor küld e-mailt a felhasználónak
+        else if (status === "Nem teljesített") {
+            const user = await userModel.findById(order.userId);
+            const orderDetails = {
+                userEmail: user.email,
+                userName: user.name,
+                orderId: order._id,
+                items: order.items,
+                amount: order.amount,
+                address: order.address,
+            };
+            
+            await sendEmail(orderDetails, status);
+        }
+
+        // A rendelés mentése
+        await order.save();
+
+        res.json({ success: true, message: "Státusz frissítve" });
 
     } catch (error) {
-        console.log(error)
-        res.json({ success: false, messages: error.message })
+        console.log(error);
+        res.json({ success: false, messages: error.message });
     }
-}
+};
+
+
+
 
 // Fizetési állapot frissítése
 const updatePaymentStatus = async (req, res) => {
@@ -287,7 +433,7 @@ const updatePaymentStatus = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Rendelés nem található' });
         }
 
-        // Frissítjük a payment mezőt
+        // Frissíti a payment mezőt
         order.payment = (paymentStatus === "Teljesített");
         await order.save();
 

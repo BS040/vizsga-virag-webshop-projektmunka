@@ -148,7 +148,7 @@ const Products = () => {
             </div>
           </div>
 
-          {/* Alkategóriák - Kisebb margóval elválasztva és biztosított border */}
+          {/* Alkategóriák*/}
           <div className="pl-2 pr-2 py-3 mt-2">
             <p className="mb-3 text-sm font-medium bg-gray-700 text-white p-2">TÍPUSOK</p>
             <div className="pl-3 flex flex-col gap-2 text-sm font-light text-gray-700">

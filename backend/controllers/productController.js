@@ -100,7 +100,7 @@ const updateProduct = async (req, res) => {
         // Kezdő lista a meglévő képekkel
         let imageUrls = [...product.image];
 
-        // Meglévő képek (ha nem lettek frissítve, akkor ezeket tartjuk meg)
+        // Meglévő képek (ha nem lettek frissítve, akkor ezek maradnak)
         const existingImage1 = req.body.existingImage1;
         const existingImage2 = req.body.existingImage2;
         const existingImage3 = req.body.existingImage3;
@@ -117,7 +117,7 @@ const updateProduct = async (req, res) => {
         for (let i = 0; i < imageFiles.length; i++) {
             if (imageFiles[i]) {
                 const result = await cloudinary.uploader.upload(imageFiles[i][0].path, { resource_type: "image" });
-                imageUrls[i] = result.secure_url; // Csak az adott indexű képet cseréljük le
+                imageUrls[i] = result.secure_url; 
             }
         }
 
@@ -131,7 +131,7 @@ const updateProduct = async (req, res) => {
             stock: size.stock || 0 // Készlet hozzáadása, ha nincs, akkor alapértelmezett 0
         })) : product.sizes;
 
-        // Bestseller boolean frissítése
+        // Bestseller frissítése
         if (bestseller !== undefined) {
             product.bestSeller = (bestseller === 'true');
         }

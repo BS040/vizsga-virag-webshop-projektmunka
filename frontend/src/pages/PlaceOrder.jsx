@@ -18,13 +18,13 @@ const PlaceOrder = () => {
     city: '',
     zipcode: '',
     phone: '',
-    email: ''
-    // company: ''
+    email: '',
+    company: ''
   });
 
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [states, setStates] = useState([]);
-  const [phonePlaceholder, setPhonePlaceholder] = useState('+36'); // Default placeholder
+  const [phonePlaceholder, setPhonePlaceholder] = useState('+36'); // Alap placeholder
 
   const countryCallingCodes = {
     Hungary: '+36',
@@ -51,7 +51,7 @@ const PlaceOrder = () => {
   const handleCountryChange = (e) => {
     const country = e.target.value;
     setSelectedCountry(country);
-    setStates(regions[country] || []);  // Update states based on selected country
+    setStates(regions[country] || []);  // A kiválasztott ország alapján frissítjük a megyéket
     setFormData((data) => ({ ...data, country }));
     setPhonePlaceholder(countryCallingCodes2[country] || '+36');
   };
@@ -88,9 +88,9 @@ const PlaceOrder = () => {
     setFormData(data => ({ ...data, [name]: value }));
 
     if (name === "country") {
-      // Beállítjuk a helyettesítő számot a kiválasztott ország alapján
+      // Beállítjuk a számot a kiválasztott ország alapján
       setSelectedCountry(value);
-      setStates(regions[value] || []);  // Államok frissítése a választott ország alapján
+      setStates(regions[value] || []);  // Megyék frissítése a választott ország alapján
       setFormData(data => ({
         ...data,
         state: '', // Állapot törlése, ha országot váltanak
@@ -105,20 +105,19 @@ const PlaceOrder = () => {
       let orderItems = []
       let totalAmount = 0  // Az összesített kosárérték (termékek + szállítási díj)
 
-      // Kosár elemek ellenőrzése és helyes árazás
-      // Iterálj végig a kosár termékein
+      // Kosár ellenőrzése és helyes árazás
       for (const items in cartItems) {
         for (const item in cartItems[items]) {
           if (cartItems[items][item] > 0) {
             const itemInfo = structuredClone(products.find(product => product._id === items));
 
-            // Ellenőrizzük, hogy az itemInfo létezik
+            // Az itemInfo létezik ??
             if (itemInfo) {
-              // Ha az itemInfo létezik, keressük meg a megfelelő méretet
+              // Ha az itemInfo létezik, akkor a megfelelő méret kell
               const selectedSize = itemInfo.sizes.find(size => size.size === item);
 
               if (selectedSize) {
-                // Ha megtaláltuk a megfelelő méretet, rendeljük hozzá az árát
+                // Ha megvan a megfelelő méretet, ár hozzárendelés
                 itemInfo.size = item;
                 itemInfo.quantity = cartItems[items][item];
                 itemInfo.price = selectedSize.price; // Ez az ár a kiválasztott mérethez
@@ -134,13 +133,13 @@ const PlaceOrder = () => {
       }
 
 
-      // Ha üres a kosár, ne küldjük el a rendelést
+      // Ha üres a kosár, nem lehet rendelést leadni
       if (orderItems.length === 0) {
         toast.error("A kosár üres!");
         return;
       }
 
-      // Ellenőrizzük, hogy helyes összeg lett kiszámítva
+      // Helyes összeg lett kiszámítva ??
       console.log("Rendelési tételek:", orderItems);
       console.log("Kiszámolt teljes összeg:", totalAmount);
 
@@ -194,7 +193,7 @@ const PlaceOrder = () => {
     if (!token) {
       navigate('/login');
     } else {
-      const decoded = JSON.parse(atob(token.split('.')[1])); // base64 decode
+      const decoded = JSON.parse(atob(token.split('.')[1])); 
       const userId = decoded.id;
 
       const fetchUserEmail = async () => {
@@ -380,7 +379,7 @@ const PlaceOrder = () => {
           <Title text1={'FIZETÉSI '} text2={'LEHETŐSÉGEK'} />
 
           <div className='flex gap-3 flex-col lg:flex-row'>
-            {/* Csak az utánvételes (COD) opciót hagyjuk */}
+            {/* Az utánvételes és kártyártás fizetés */}
             <div onClick={() => setMethod('cod')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
               <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'cod' ? 'bg-green-400' : ''}`}></p>
               <p className='text-gray-500 text-sm font-medium mx-4'>UTÁNVÉTEL</p>

@@ -7,6 +7,8 @@ const ManageUsers = ({ token }) => {
     const [users, setUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userIdToUpdate, setUserIdToUpdate] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -39,7 +41,7 @@ const ManageUsers = ({ token }) => {
                 }
             });
 
-            // Update the state with the new status
+            
             setUsers(prevUsers =>
                 prevUsers.map(user =>
                     user._id === userIdToUpdate ? { ...user, status: updatedStatus } : user
@@ -64,9 +66,21 @@ const ManageUsers = ({ token }) => {
         setUserIdToUpdate(null);
     };
 
+
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="mb-4 font-bold text-xl">Felhasználók ({users.length})</h1>
+            <div className="mb-4 max-w-md mx-auto text-center">
+                <label className="block mb-1 font-semibold">Keresés (név vagy email)</label>
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Pl. Kovács Anna vagy anna@email.hu"
+                    className="w-full p-2 border rounded-none"
+                />
+            </div>
             <div className='flex flex-col gap-2'>
                 {/* Fejléc */}
                 <div className='grid grid-cols-[1fr_0.9fr_0.19fr] items-center py-2 px-3 border bg-gray-100 text-sm font-bold'>
@@ -76,18 +90,27 @@ const ManageUsers = ({ token }) => {
                 </div>
 
                 {/* Felhasználó lista */}
-                {users.map((user) => (
-                    <UserRow key={user._id} user={user} onUpdateStatus={openModal} />
-                ))}
+                {users.filter(user =>
+                    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                    .map(user => (
+                        <UserRow key={user._id} user={user} onUpdateStatus={openModal} />
+                    ))}
             </div>
 
-            {/* PopUp for confirmation */}
-            <PopUp 
-                isOpen={isModalOpen} 
-                onClose={closeModal} 
-                onConfirm={handleUpdateStatus} 
-                action={users.find(user => user._id === userIdToUpdate)?.status === 'active' ? 'inaktiválás' : 'visszaállítás'}
+            {/* PopUp */}
+            <PopUp
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                onConfirm={handleUpdateStatus}
+                message={
+                    users.find(user => user._id === userIdToUpdate)?.status === 'active'
+                        ? 'Biztosan inaktiválod ezt a felhasználót?'
+                        : 'Biztosan visszaállítod a felhasználót?'
+                }
             />
+
         </div>
     );
 };
@@ -97,8 +120,8 @@ const UserRow = ({ user, onUpdateStatus }) => {
         <div className="grid grid-cols-[1fr_1fr_0.25fr] items-center py-2 px-3 border text-sm">
             <p className="font-medium truncate">{user.name}</p>
             <p className="font-medium truncate">{user.email}</p>
-            <button 
-                onClick={() => onUpdateStatus(user._id)} 
+            <button
+                onClick={() => onUpdateStatus(user._id)}
                 className={`px-3 py-2 transition ${user.status === 'inactive' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white`}
             >
                 {user.status === 'inactive' ? 'Visszaállítás' : 'Inaktiválás'}

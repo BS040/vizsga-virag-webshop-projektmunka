@@ -10,7 +10,7 @@ import cartRouter from './routes/cartRoute.js';
 import orderRouter from './routes/orderRoute.js';
 import { getUserDetails } from './controllers/userController.js';
 
-//App Config
+//App konfiguráció
 const app = express();
 const port = process.env.PORT || 4000;
 connectDB()

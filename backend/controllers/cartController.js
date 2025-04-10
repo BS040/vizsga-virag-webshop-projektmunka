@@ -19,11 +19,11 @@ const addToCart = async (req, res) => {
         cartData[itemId][size] = 1;  // Ha a méret nem létezik, hozd létre
       }
     } else {
-      cartData[itemId] = {};  // Ha nem létezik az itemId, hozz létre egy új objektumot
+      cartData[itemId] = {};  // Ha nem létezik az itemId, hozz létre egy újat
       cartData[itemId][size] = 1;
     }
 
-    // A módosított kosár adatokat elmentjük a felhasználóhoz
+    // A módosított kosár adatokat elmentjük
     await userModel.findByIdAndUpdate(userId, { cartData });
 
     res.json({ success: true, message: "Termék sikeresen hozzáadva" });

@@ -11,7 +11,7 @@ const Product = () => {
   const [image, setImage] = useState('');
   const [size, setSize] = useState('');
   const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);  // Készlet állapot
+  const [stock, setStock] = useState(0);  // Készlet 
   const [quantity, setQuantity] = useState(1);  // A felhasználó által választott mennyiség
 
   useEffect(() => {
@@ -19,13 +19,13 @@ const Product = () => {
     if (product) {
       setProductData(product);
       setImage(Array.isArray(product.image) ? product.image[0] : '');
-      // Alapértelmezett méret és ár beállítása
+      // Alapértelmezett méret és ár
 
       if(Array.isArray(product.sizes) && product.sizes.length > 0){
       const defaultSize = product.sizes[0];
       setSize(defaultSize.size);
       setPrice(defaultSize.price);
-      setStock(defaultSize.stock); // Alapértelmezett készlet beállítása
+      setStock(defaultSize.stock); // Alapértelmezett készlet 
       setQuantity(1);
       }
     }
@@ -37,7 +37,7 @@ const Product = () => {
     if (selectedProductSize){
     setSize(selectedProductSize.size);
     setPrice(selectedProductSize.price);
-    setStock(selectedProductSize.stock);  // Frissíteni a készletet is
+    setStock(selectedProductSize.stock);  // Frissíti a készletet 
     setQuantity(1);
     }
   };
@@ -45,7 +45,7 @@ const Product = () => {
   const handleQuantityChange = (e) => {
     const value = e.target.value;
   
-    // Csak számokat engedünk be, és nem engedjük, hogy a mennyiség meghaladja a készletet
+    // Csak számokat engedünk, és nem engedjük, hogy a mennyiség meghaladja a készletet
     if (value === '' || (value >= 1 && value <= stock && !isNaN(value))) {
       setQuantity(value === '' ? '' : Number(value)); // Ha üres, hagyjuk üresen, különben számra konvertáljuk
     }
@@ -57,15 +57,15 @@ const Product = () => {
 <button
   onClick={() => {
     if (size && quantity > 0 && quantity <= stock) {
-      addToCart(productData._id, size, quantity); // A kiválasztott mennyiséget is átadjuk a kosárba
+      addToCart(productData._id, size, quantity); // A kiválasztott mennyiséget is átadobjuk a kosárba
     } else {
       alert("Kérlek, válassz érvényes mennyiséget!");
     }
   }}
   className={`bg-black text-white px-3 py-2 text-xs active:bg-gray-700 ${!isQuantityValid ? 'opacity-50 cursor-not-allowed' : ''} w-32 h-12`}
-  disabled={!isQuantityValid}  // Ha a mennyiség nem érvényes, a gomb deaktiválva lesz
+  disabled={!isQuantityValid}  // Ha a mennyiség nem érvényes, a gomb nem elérhető
 >
-  Kosárba  {/* A gombon is megjelenhet a választott mennyiség */}
+  Kosárba  {/* A gombon is megjelenhet a választott mennyiség de szerintem az ronda vagy furán néz ki*/}
 </button>
 
 
@@ -141,15 +141,15 @@ const Product = () => {
               <button
                 onClick={() => {
                   if (size && quantity > 0 && quantity <= stock) {
-                    addToCart(productData._id, size, quantity); // A kiválasztott mennyiséget is átadjuk a kosárba
+                    addToCart(productData._id, size, quantity); // A kiválasztott mennyiséget is átdobjuk a kosárba
                   } else {
                     alert("Kérlek, válassz érvényes mennyiséget!");
                   }
                 }}
                 className={`bg-black text-white px-3 py-2 text-xs active:bg-gray-700 ${!isQuantityValid ? 'opacity-50 cursor-not-allowed' : ''} w-32 h-12`}
-                disabled={!isQuantityValid}  // Ha a mennyiség nem érvényes, a gomb deaktiválva lesz
+                disabled={!isQuantityValid}  // Ha a mennyiség nem érvényes, a gomb nem elérhető
               >
-                Kosárba  {/* A gombon is megjelenhet a választott mennyiség */}
+                Kosárba  {/* A gombon is megjelenhet a választott mennyiség de szerintem az ronda vagy furán nez ki */}
               </button>
 
             </div>

@@ -9,16 +9,16 @@ const BestSeller = () => {
     const [bestSeller, setBestSeller] = useState([]);
 
     useEffect(() => {
-        // Logoljuk ki az összes terméket, hogy lássuk, mi van benne
+        // Az összes termék logolása
         console.log("Termékek:", products);
 
-        // Szűrés a "true" boolean értékre a bestseller mezőben
+        // Szűrés "true" értékre a bestseller mezőben
         const bestProduct = products.filter((item) => {
-            console.log("Termék:", item);  // Logoljuk le minden termék objektumot
-            return item.bestSeller === true; // Szűrés boolean értékre
+            console.log("Termék:", item);  // Minden termék logolása
+            return item.bestSeller === true; 
         });
 
-        console.log("Bestseller termékek:", bestProduct); // Logoljuk a megtalált bestseller termékeket
+        console.log("Bestseller termékek:", bestProduct); // A megtalált bestseller termékek
 
         setBestSeller(bestProduct.slice(0, 5));  // Az első 5 bestseller termék
     }, [products]);
