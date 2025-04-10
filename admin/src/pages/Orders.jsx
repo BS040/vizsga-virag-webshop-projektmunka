@@ -118,7 +118,7 @@ const OrderItem = ({ order, statusHandler, paymentStatusHandler }) => {
               {index < order.items.length - 1 && ','}
             </p>
           ))}
-          <p className='mt-3 mb-2 font-semibold'>{order.address.firstName + " " + order.address.lastName}</p>
+          <p className='mt-3 mb-2 font-semibold'>{order.address.fullName}</p>
           <div>
             <p>{order.address.street + ", "}</p>
             <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode}</p>
