@@ -136,7 +136,7 @@ const Update = ({ token }) => {
 
     return (
         <div className="container mx-auto px-4 py-6">
-            <h2 className="text-2xl font-bold mb-6">Termék frissítése</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">Termék frissítése</h2>
             <form onSubmit={handleUpdate} className="space-y-4">
 
                 <div className="flex flex-col gap-2">
@@ -145,7 +145,7 @@ const Update = ({ token }) => {
                         type="text"
                         value={formData.name || ''}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="px-4 py-2 border border-gray-300"
+                        className="px-4 py-2 border rounded-none border-gray-300"
                     />
                 </div>
 
@@ -154,7 +154,7 @@ const Update = ({ token }) => {
                     <textarea
                         value={formData.description || ''}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="px-4 py-2 border border-gray-300"
+                        className="px-4 py-2 border rounded-none border-gray-300"
                     />
                 </div>
 
@@ -165,7 +165,7 @@ const Update = ({ token }) => {
                         <select
                             value={formData.category || 'Szálas'}
                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         >
                             <option value="Szálas">Szálas</option>
                             <option value="Csokor">Csokor</option>
@@ -179,7 +179,7 @@ const Update = ({ token }) => {
                         <select
                             value={formData.subCategory || 'Dekoráció'}
                             onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         >
                             <option value="Dekoráció">Dekoráció</option>
                             <option value="Kerti">Kerti</option>
@@ -200,7 +200,7 @@ const Update = ({ token }) => {
                                 ...formData,
                                 sizes: { ...formData.sizes, smallPrice: e.target.value }
                             })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         />
                         <label className="font-medium">Készlet/Kicsi</label>
                         <input
@@ -211,7 +211,7 @@ const Update = ({ token }) => {
                                 ...formData,
                                 sizes: { ...formData.sizes, smallStock: e.target.value }
                             })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         />
                     </div>
 
@@ -225,7 +225,7 @@ const Update = ({ token }) => {
                                 ...formData,
                                 sizes: { ...formData.sizes, mediumPrice: e.target.value }
                             })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         />
                         <label className="font-medium">Készlet/Közepes</label>
                         <input
@@ -236,7 +236,7 @@ const Update = ({ token }) => {
                                 ...formData,
                                 sizes: { ...formData.sizes, mediumStock: e.target.value }
                             })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         />
                     </div>
 
@@ -250,7 +250,7 @@ const Update = ({ token }) => {
                                 ...formData,
                                 sizes: { ...formData.sizes, largePrice: e.target.value }
                             })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         />
                         <label className="font-medium">Készlet/Nagy</label>
                         <input
@@ -261,7 +261,7 @@ const Update = ({ token }) => {
                                 ...formData,
                                 sizes: { ...formData.sizes, largeStock: e.target.value }
                             })}
-                            className="w-full px-4 py-2 border border-gray-300"
+                            className="w-full px-4 py-2 border rounded-none border-gray-300"
                         />
                     </div>
                 </div>
