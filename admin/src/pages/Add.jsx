@@ -88,7 +88,7 @@ const Add = ({ token }) => {
 
   return (
     <form onSubmit={onSubmitHandler} className='flex flex-col w-full items-start gap-3'>
-      
+
       {/* Kép feltöltés */}
       <div>
         <p className='mb-2'>Kép feltöltése</p>
@@ -151,23 +151,43 @@ const Add = ({ token }) => {
           {sizes.map((size) => (
             <div key={size.size} className='flex flex-col'>
               <p>{size.size}</p>
-              <input type='number' placeholder={`Ár (${size.size})`} value={size.price} onChange={(e) => handleSizeChange(size.size, 'price', e.target.value)} className='w-[120px] px-3 py-2 rounded-none' />
+              <input type='number' 
+              placeholder={`Ár (${size.size})`} 
+              value={size.price} 
+              onChange={(e) => handleSizeChange(size.size, 'price', e.target.value)} 
+              onKeyDown={(e) => {
+                if (
+                  ['e', 'E', '+', '-', ',', '.'].includes(e.key)
+                ) {
+                  e.preventDefault();
+                }
+              }} className='w-[120px] px-3 py-2 rounded-none' />
             </div>
           ))}
         </div>
       </div>
 
-       <div className='mb-2'>
+      <div className='mb-2'>
         <p className='mb-2'>Méret/Készlet</p>
         <div className='flex gap-3'>
           {sizes.map((size) => (
             <div key={size.size} className='flex flex-col'>
               <p>{size.size}</p>
-              <input type='number' placeholder={`Készlet (${size.size})`} value={size.stock} onChange={(e) => handleSizeChange(size.size, 'stock', e.target.value)} className='w-[120px] px-3 py-2 rounded-none' />
+              <input type='number'
+                placeholder={`Készlet (${size.size})`}
+                value={size.stock}
+                onChange={(e) => handleSizeChange(size.size, 'stock', e.target.value)}
+                onKeyDown={(e) => {
+                  if (
+                    ['e', 'E', '+', '-', ',', '.'].includes(e.key)
+                  ) {
+                    e.preventDefault();
+                  }
+                }} className='w-[120px] px-3 py-2 rounded-none' />
             </div>
           ))}
         </div>
-      </div> 
+      </div>
 
       {/* Bestseller */}
       <div className='flex gap-2 mt-2'>
