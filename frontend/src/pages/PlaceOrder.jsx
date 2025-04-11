@@ -416,8 +416,8 @@ const PlaceOrder = () => {
             {/* E-mail cím */}
             <h4 className="font-semibold text-lg mt-4">E-mail:</h4>
             <p className="text-sm text-gray-600">
-              <a href="mailto:valami@virag.hu" className="text-gray-600 hover:underline">
-                valami@virag.hu
+              <a href="mailto:ugyfelszolgalat@virag.com" className="text-gray-600 hover:underline">
+                ugyfelszolgalat@virag.com
               </a>
             </p>
           </div>
