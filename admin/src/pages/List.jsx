@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 const List = ({ token }) => {
   const [list, setList] = useState([]);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   const fetchList = async () => {
     try {
@@ -41,9 +43,24 @@ const List = ({ token }) => {
     fetchList();
   }, []);
 
+
+  const filteredList = list.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+
   return (
     <>
-      <p className='mb-2 font-bold text-lg'>Minden Termék ({list.length})</p>
+      <p className='mb-2 font-bold text-center text-lg'>Minden Termék ({list.length})</p>
+      <div className="w-full flex justify-center">
+      <input
+        type="text"
+        placeholder="Keresés terméknévre..."
+        className="mb-3 px-3 py-2 border rounded-none text-center w-full max-w-md"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      </div>
       <div className='flex flex-col gap-2'>
         {/* Fejléc */}
         <div className='hidden md:grid grid-cols-[0.5fr_1.11fr_0.55fr_0.40fr_0.30fr_0.40fr_0.50fr] items-center py-2 px-3 border bg-gray-100 text-sm font-bold'>
@@ -57,7 +74,7 @@ const List = ({ token }) => {
         </div>
 
         {/* Terméklista */}
-        {list.map((item) => (
+        {filteredList.map((item) => (
           <ProductRow key={item._id} item={item} removeProduct={removeProduct} navigate={navigate} />
         ))}
       </div>
