@@ -51,7 +51,7 @@ const List = ({ token }) => {
 
   return (
     <>
-      <p className='mb-2 font-bold text-center text-lg'>Minden Termék ({list.length})</p>
+      <label className="block mb-1 text-center font-semibold">Keresés</label>
       <div className="w-full flex justify-center">
       <input
         type="text"
@@ -61,6 +61,7 @@ const List = ({ token }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       </div>
+      <p className='mb-2 font-bold text-lg'>Minden Termék ({list.length})</p>
       <div className='flex flex-col gap-2'>
         {/* Fejléc */}
         <div className='hidden md:grid grid-cols-[0.5fr_1.11fr_0.55fr_0.40fr_0.30fr_0.40fr_0.50fr] items-center py-2 px-3 border bg-gray-100 text-sm font-bold'>
