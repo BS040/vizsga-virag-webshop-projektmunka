@@ -160,9 +160,18 @@ const Product = () => {
 
           <hr className='mt-8 sm:w-4/5' />
           <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
-            <p>Utánvételes fizetés</p>
-            <p>7 napos visszaváltás</p>
-            <p>Könnyen módosítható termék</p>
+          <div className='flex items-center gap-2'>
+              <img src={assets.cart_icon} alt="Utánvételes fizetés" className="w-6 h-6" />
+              <p>Utánvételes fizetés</p>
+            </div>
+            <div className='flex items-center gap-2'>
+              <img src={assets.quality_icon} alt="7 napos visszaváltás" className="w-6 h-6" />
+              <p>7 napos visszaváltás</p>
+            </div>
+            <div className='flex items-center gap-2'>
+              <img src={assets.exchange_icon} alt="Könnyen módosítható termék" className="w-6 h-6" />
+              <p>Könnyen módosítható termék</p>
+            </div>
           </div>
         </div>
       </div>
